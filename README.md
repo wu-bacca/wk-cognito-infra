@@ -1,6 +1,6 @@
-# Welcome to your CDK TypeScript project
+# This is a CDK TypeScript project
 
-This is a blank project for CDK development with TypeScript.
+The project serves as IaC for the AWS cognito user pool. 
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
