@@ -1,26 +1,26 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-import * as cognito from 'aws-cdk-lib/aws-cognito';
-import * as cdk from 'aws-cdk-lib';
-import { callbackify } from 'util';
+import { Stack, StackProps } from "aws-cdk-lib";
+import { Construct } from "constructs";
+import * as cognito from "aws-cdk-lib/aws-cognito";
+import * as cdk from "aws-cdk-lib";
+import { callbackify } from "util";
 
 export class WkCognitoInfraStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const userPool = new cognito.UserPool(this, 'wouterkroeze', {
-      userPoolName: 'wouterkroeze',      
+    const userPool = new cognito.UserPool(this, "wouterkroeze", {
+      userPoolName: "wouterkroeze",
       selfSignUpEnabled: true,
       signInAliases: {
-        email: true,
+        email: true
       },
       autoVerify: {
-        email: true,
+        email: true
       },
       standardAttributes: {
         email: {
           required: true,
-          mutable: true,
+          mutable: true
         }
       },
       accountRecovery: cognito.AccountRecovery.EMAIL_ONLY,
@@ -30,11 +30,11 @@ export class WkCognitoInfraStack extends Stack {
         requireUppercase: true,
         requireLowercase: true,
         requireSymbols: true,
-        requireDigits: true,
+        requireDigits: true
       }
     });
 
-        // add a custom domain name, note: you will have to manually do the route53 part
+    // add a custom domain name, note: you will have to manually do the route53 part
     // TODO: uncomment and provide your cert arn
     // const cognitoDomain = new cognito.CfnUserPoolDomain(this, 'tnc-up-dom', {
     //   domain: 'auth.somedomain.com',
@@ -46,9 +46,9 @@ export class WkCognitoInfraStack extends Stack {
 
     // TODO: route53 to alias not supported yet
 
-    const frontendAppClient = new cognito.UserPoolClient(this, 'frontendAppClient', {
+    const frontendAppClient = new cognito.UserPoolClient(this, "frontendAppClient", {
       userPool: userPool,
-      userPoolClientName: 'frontendAppClient',
+      userPoolClientName: "frontendAppClient",
       generateSecret: true,
       refreshTokenValidity: cdk.Duration.days(30),
       accessTokenValidity: cdk.Duration.minutes(60),
@@ -62,12 +62,11 @@ export class WkCognitoInfraStack extends Stack {
       preventUserExistenceErrors: true,
       enableTokenRevocation: true,
       oAuth: {
-        flows: { 
-        },
+        flows: {},
         callbackUrls: []
       }
     });
 
-    const appIntegration = new cognito.us
+    const appIntegration = new cognito.us();
   }
 }
