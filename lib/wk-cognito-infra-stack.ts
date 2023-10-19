@@ -3,6 +3,7 @@ import { Construct } from "constructs";
 import * as cognito from "aws-cdk-lib/aws-cognito";
 import * as cdk from "aws-cdk-lib";
 import { callbackify } from "util";
+import { OAuthScope } from "aws-cdk-lib/aws-cognito";
 
 export class WkCognitoInfraStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -62,11 +63,17 @@ export class WkCognitoInfraStack extends Stack {
       preventUserExistenceErrors: true,
       enableTokenRevocation: true,
       oAuth: {
-        flows: {},
-        callbackUrls: []
+        flows: {
+          authorizationCodeGrant: true,
+          implicitCodeGrant: false,
+          clientCredentials: false,
+        },
+        scopes: [OAuthScope.EMAIL, OAuthScope.OPENID, OAuthScope.PROFILE],
+        callbackUrls: [
+          "http://localhost:3000/api/auth/callback/cognito",
+          "https://apps.wouterkroeze.com/api/auth/callback/cognito"
+        ]
       }
     });
-
-    const appIntegration = new cognito.us();
   }
 }
